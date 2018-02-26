@@ -57,7 +57,7 @@ resource "aws_lambda_function" "lambda_ebs_backup" {
     role = "${aws_iam_role.lambda_ebs_backup.arn}"
     handler = "ebs-backup.lambda_handler"
     source_code_hash = "${base64sha256(file("ebs-backup.zip"))}"
-    runtime = "python2.7"
+    runtime = "python3.6"
     timeout = 60
 }
 

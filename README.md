@@ -61,13 +61,7 @@ TBD
             "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
-                "logs:PutLogEvents"
-            ],
-            "Resource": "arn:aws:logs:*:*:*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+                "logs:PutLogEvents",
                 "ec2:CreateSnapshot",
                 "ec2:CreateTags",
                 "ec2:DeleteSnapshot",
@@ -90,7 +84,7 @@ TBD
     * Enable trigger
 * Configure function
     * Enter name
-    * Select "Python 2.7" from the Runtime dropdown
+    * Select "Python 3.6" from the Runtime dropdown
     * Copy the source code from ebs-backup.py to code window
     * Check that Handler is "lambda_function.lambda_handler"
     * Choose the previously created IAM role

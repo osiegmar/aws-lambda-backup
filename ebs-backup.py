@@ -74,13 +74,13 @@ def backup_instance(instance):
             'InstanceName': instance_name,
             'DeleteOn': delete_date_fmt
         }
-        tag_list = map(lambda (k, v): {'Key': k, 'Value': v}, list(tags.items()))
+        tag_list = list(map(lambda kv: {'Key': kv[0], 'Value': kv[1]}, list(tags.items())))
         client.create_tags(Resources=snapshot_ids, Tags=tag_list)
 
 
 def parse_config(instance, instance_name, config):
     try:
-        backup_configuration = map(int, config.split(','))
+        backup_configuration = list(map(int, config.split(',')))
         if any(i < 0 for i in backup_configuration):
             raise ValueError('Values must be >= 0')
         return backup_configuration
