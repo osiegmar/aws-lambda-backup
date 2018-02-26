@@ -18,6 +18,8 @@ from datetime import date
 import boto3
 from dateutil.relativedelta import relativedelta
 
+VERSION = '1.0.1'
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 ec2 = boto3.resource('ec2')
@@ -25,6 +27,7 @@ client = boto3.client('ec2')
 
 
 def lambda_handler(event, context):
+    logger.info('Start ebs-backup v{}'.format(VERSION))
     backup()
     expire()
 
