@@ -33,7 +33,7 @@ If you specify 0 for a weekly, monthly or yearly Retention, a backup for the nex
 ### Via Terraform
 ```sh
 cd terraform
-./create_zip.sh
+./create_zip.sh     ## Or:> powershell ./create_zip.ps1
 terraform plan -out terraform.tfplan
 ```
 
