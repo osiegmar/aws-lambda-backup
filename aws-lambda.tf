@@ -1,3 +1,9 @@
+data "archive_file" "ebs-backup-py" {
+    type        = "zip"
+    source_file = "${path.module}/ebs-backup.py"
+    output_path = "${path.module}/ebs-backup.zip"
+}
+
 resource "aws_iam_role" "lambda_ebs_backup" {
     name = "lambda_ebs_backup"
 
@@ -52,11 +58,11 @@ EOF
 }
 
 resource "aws_lambda_function" "lambda_ebs_backup" {
-    filename = "ebs-backup.zip"
+    filename = "${path.module}/ebs-backup.zip"
     function_name = "ebs-backup"
     role = "${aws_iam_role.lambda_ebs_backup.arn}"
     handler = "ebs-backup.lambda_handler"
-    source_code_hash = "${base64sha256(file("ebs-backup.zip"))}"
+    source_code_hash = "${data.archive_file.ebs-backup-py.output_base64sha256}"
     runtime = "python3.6"
     timeout = 60
 }
