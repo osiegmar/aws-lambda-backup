@@ -31,9 +31,21 @@ If you specify 0 for a weekly, monthly or yearly Retention, a backup for the nex
 ## Installation
 
 ### Via Terraform
+This project is a Terraform module. Reference module by adding the following to your terraform configuration:
 ```sh
-cd terraform
-./create_zip.sh     ## Or:> powershell ./create_zip.ps1
+module "aws-lambda-backup" {
+  source  = "${path-to-modules}/aws-lambda-backup"
+}
+```
+
+Initialize module by (re-)initializing your terraform project:
+```sh
+terraform init
+```
+
+Apply changes to terraform configuration:
+
+```sh
 terraform plan -out terraform.tfplan
 ```
 
