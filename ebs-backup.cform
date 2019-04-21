@@ -4,20 +4,21 @@
   "Metadata": {},
   "Parameters": {
     "S3Bucket": {
-        "Description": "The S3 Bucket Name that you have the python script saved in (don't include s3:// etc)",
-        "Type": "String",
-        "Default": ""
+      "Description": "The S3 Bucket Name that you have the python script saved in (don't include s3:// etc)",
+      "Type": "String",
+      "Default": ""
     },
-    "S3Key":{
-        "Description": "The zip file name of the Lambda code package (i.e. a zip of the ebs-backup.py)",
-        "Type": "String",
-        "Default": "ebs-backup.py.zip"
-    },"ScheduleExpression": {
-        "Description": "Cron or Rate using UTC time of when and how oftern you want this to execute",
-        "Type": "String",
-        "Default": "cron(0 14 * * ? *)"
+    "S3Key": {
+      "Description": "The zip file name of the Lambda code package (i.e. a zip of the ebs-backup.py)",
+      "Type": "String",
+      "Default": "ebs-backup.py.zip"
+    },
+    "ScheduleExpression": {
+      "Description": "Cron or Rate using UTC time of when and how oftern you want this to execute",
+      "Type": "String",
+      "Default": "cron(0 14 * * ? *)"
     }
-    },
+  },
   "Mappings": {},
   "Conditions": {},
   "Resources": {
@@ -78,10 +79,33 @@
           ]
         },
         "Code": {
-          "S3Bucket": { "Ref": "S3Bucket" },
-          "S3Key": { "Ref": "S3Key" }
+          "S3Bucket": {
+            "Ref": "S3Bucket"
+          },
+          "S3Key": {
+            "Ref": "S3Key"
+          }
         },
         "Runtime": "python3.6"
+      }
+    },
+    "InvokeLambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "BackupFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "events.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "CloudwatchTrigger",
+            "Arn"
+          ]
+        }
       }
     },
     "CloudwatchTrigger": {
@@ -89,12 +113,18 @@
       "Properties": {
         "Description": "Fires the Lambda function to find and backup EBS volumes in the account",
         "Name": "EBSBackupTrigger",
-        "ScheduleExpression": { "Ref": "ScheduleExpression" },
+        "ScheduleExpression": {
+          "Ref": "ScheduleExpression"
+        },
         "Targets": [
           {
-            "Arn": 
-              { "Fn::GetAtt" : [ "BackupFunction", "Arn" ]},
-            "Id":"TriggerBackup"
+            "Arn": {
+              "Fn::GetAtt": [
+                "BackupFunction",
+                "Arn"
+              ]
+            },
+            "Id": "TriggerBackup"
           }
         ]
       }
