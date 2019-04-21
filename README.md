@@ -58,7 +58,15 @@ terraform apply terraform.tfplan
 
 ### Via CloudFormation
 
-TBD
+1) Make a zip file of the ebs-backup.py and upload it to an S3 bucket (handy if its the same bucket as the Cloudformation Template as this saves some access issues)
+
+2) Upload the cloudformation template to the console 
+
+3) In the parameters, enter the bucket name, and the zip files name. Select a timing to execute using the [CloudWatch ScheduleExpression](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html) format
+
+4) Confirm settings and it will create a Lambda Execution Role, upload the code to Lambda from the zip file, and create a CloudWatch execution on the schedule you define. 
+
+5) Add tags to your instances. 
 
 ### Manually
 
