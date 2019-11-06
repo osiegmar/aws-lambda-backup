@@ -14,9 +14,11 @@
 
 import logging
 from datetime import date
+from time import sleep
 
 import boto3
 from dateutil.relativedelta import relativedelta
+from botocore.exceptions import ClientError
 
 VERSION = '1.0.1'
 
@@ -78,7 +80,18 @@ def backup_instance(instance):
             'DeleteOn': delete_date_fmt
         }
         tag_list = list(map(lambda kv: {'Key': kv[0], 'Value': kv[1]}, list(tags.items())))
-        client.create_tags(Resources=snapshot_ids, Tags=tag_list)
+        client_error = None
+        for i in range(6):
+            try:
+                client.create_tags(Resources=snapshot_ids, Tags=tag_list)
+            except ClientError as e:
+                client_error = e
+                sleep(15)
+                continue
+            else:
+                break
+        else:
+            raise client_error
 
 
 def parse_config(instance, instance_name, config):
