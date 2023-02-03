@@ -2,6 +2,7 @@
 
 AWS Lambda Backup is a script to create and remove snapshots of EBS volumes. 
 
+> :warning: This project is now archived because it has been superseded by [AWS Backup](https://aws.amazon.com/backup/).
 
 ## Features
 
